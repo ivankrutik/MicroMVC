@@ -3,9 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{73C2083B-1A86-47D9-94F1-234EFDA8A479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Web", "Mango.Web\Mango.Web.csproj", "{91C7FEF5-0A3C-4446-885F-BC8ED569DD58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{51E115AC-5D4D-443C-8CEB-CE6A2CB9B885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Services.ProductAPI", "Mango.Services.ProductAPI\Mango.Services.ProductAPI.csproj", "{937700A9-465D-4271-9311-41486B112F56}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91C7FEF5-0A3C-4446-885F-BC8ED569DD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91C7FEF5-0A3C-4446-885F-BC8ED569DD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91C7FEF5-0A3C-4446-885F-BC8ED569DD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91C7FEF5-0A3C-4446-885F-BC8ED569DD58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{937700A9-465D-4271-9311-41486B112F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{937700A9-465D-4271-9311-41486B112F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{937700A9-465D-4271-9311-41486B112F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{937700A9-465D-4271-9311-41486B112F56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{91C7FEF5-0A3C-4446-885F-BC8ED569DD58} = {73C2083B-1A86-47D9-94F1-234EFDA8A479}
+		{937700A9-465D-4271-9311-41486B112F56} = {51E115AC-5D4D-443C-8CEB-CE6A2CB9B885}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E6CBEBF-04C6-475F-81EC-D22AD55BB045}
