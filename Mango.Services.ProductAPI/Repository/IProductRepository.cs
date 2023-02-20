@@ -5,12 +5,12 @@ namespace Mango.Services.ProductAPI.Repository
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<ProductDto>> GetProducts();
+        Task<IEnumerable<ProductDto>> GetProductsAsync();
 
-        Task<ProductDto> GetProductById(long productId);
+        Task<ProductDto> GetProductByIdAsync(long productId);
 
-        Task<ProductDto> CreateUpdateProduct(ProductDto product);
+        Task<ProductDto> CreateUpdateProductAsync(ProductDto product);
 
-        Task<bool> DeleteProduct(long productId);
+        Task<bool> DeleteProductAsync(long productId);
     }
 }
