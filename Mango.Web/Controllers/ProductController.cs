@@ -2,6 +2,7 @@
 using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Mango.Web.Controllers
 {
@@ -23,6 +24,26 @@ namespace Mango.Web.Controllers
             }
 
             return View(list);
+        }
+
+        public async Task<IActionResult> ProductCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProductCreate(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var responce = await _productService.CreateProductAsync<ResponseDto>(model);
+                if (responce != null && responce.IsSuccess)
+                {
+                    return RedirectToAction("ProductIndex");
+                }
+            }
+            return View(model);
         }
     }
 }
