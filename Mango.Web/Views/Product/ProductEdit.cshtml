@@ -1,10 +1,11 @@
 ﻿@model Mango.Web.Models.ProductDto
 
-<form asp-action="ProductCreate">
+<form asp-action="ProductEdit">
+    <input  asp-for="ProductID" hidden/>
     <br />
     <div class="container border p-3">
         <h1 class="text-primary">
-            Создать продукт
+            Изменить продукт
         </h1>
         <hr />
         <div class="row">
@@ -54,7 +55,7 @@
             </div>
 
             <div class="col-5">
-                <input type="submit" value="Создать" class="btn btn-success form-control" />
+                <input type="submit" value="Изменить" class="btn btn-success form-control" />
             </div>
         </div>
     </div>
@@ -62,5 +63,5 @@
 
 @section Scripts
     {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

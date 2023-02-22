@@ -45,5 +45,57 @@ namespace Mango.Web.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> ProductEdit(long productId)
+        {
+            var responce = await _productService.GetProductByIdAsync<ResponseDto>(productId);
+            if (responce != null && responce.IsSuccess)
+            {
+                var model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(responce.Result));
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProductEdit(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var responce = await _productService.UpdateProductAsync<ResponseDto>(model);
+                if (responce != null && responce.IsSuccess)
+                {
+                    return RedirectToAction("ProductIndex");
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> ProductDelete(long productId)
+        {
+            var responce = await _productService.GetProductByIdAsync<ResponseDto>(productId);
+            if (responce != null && responce.IsSuccess)
+            {
+                var model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(responce.Result));
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProductDelete(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var responce = await _productService.DeleteProductAsync<ResponseDto>(model.ProductID);
+                if (responce != null && responce.IsSuccess)
+                {
+                    return RedirectToAction("ProductIndex");
+                }
+            }
+            return View(model);
+        }
     }
 }
