@@ -20,7 +20,7 @@ namespace Mango.Services.ProductAPI.Repository
         public async Task<ProductDto> CreateUpdateProductAsync(ProductDto product)
         {
             var Product = _mapper.Map<ProductDto, Product>(product);
-            if (Product.ProductID != 0)
+            if (Product.ProductID == 0)
             {
                 var res = _dbContext.Products.Add(Product);
                 Product = res.Entity;

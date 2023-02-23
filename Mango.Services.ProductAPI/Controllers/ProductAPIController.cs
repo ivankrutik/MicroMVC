@@ -83,11 +83,12 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<object> PutAsync(long productId)
+        [Route("{id}")]
+        public async Task<object> PutAsync(long id)
         {
             try
             {
-                _response.Result = await _productRepository.DeleteProductAsync(productId);
+                _response.Result = await _productRepository.DeleteProductAsync(id);
             }
             catch (Exception ex)
             {
