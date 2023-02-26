@@ -18,8 +18,6 @@ namespace UI.Pages.Login;
 public class Index : PageModel
 {
     private readonly TestUserStore _users;
-    //UserManager<ApplicationUser> userManager,
-    //SignInManager<ApplicationUser> signInManager
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;

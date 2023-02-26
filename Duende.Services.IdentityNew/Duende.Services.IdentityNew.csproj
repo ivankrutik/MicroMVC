@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
     <Compile Remove="UI\**" />
+    <Content Remove="Controllers\**" />
     <Content Remove="UI\**" />
+    <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="UI\**" />
+    <None Remove="Controllers\**" />
     <None Remove="UI\**" />
   </ItemGroup>
 
@@ -130,7 +134,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
