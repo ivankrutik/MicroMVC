@@ -38,7 +38,7 @@ namespace Duende.Services.IdentityNew
                 ClientId = "mango",
                 ClientSecrets = {new Secret("secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
-                RedirectUris = {"https://localhost:44344/signin-oidc" },
+                RedirectUris = {"https://localhost:44344/signin-oidc" , "https://localhost:7141/signin-oidc", "http://localhost:5269/signin-oidc"},
                 PostLogoutRedirectUris= {"https://localhost:44344/signout-callback-oidc" },
                 AllowedScopes = new List<string>
                 {
