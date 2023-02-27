@@ -39,7 +39,7 @@ namespace Duende.Services.IdentityNew
                 ClientSecrets = {new Secret("secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
                 RedirectUris = {"https://localhost:44344/signin-oidc" , "https://localhost:7141/signin-oidc", "http://localhost:5269/signin-oidc"},
-                PostLogoutRedirectUris= {"https://localhost:44344/signout-callback-oidc" },
+                PostLogoutRedirectUris= {"https://localhost:44344/signout-callback-oidc", "https://localhost:7141/signout-callback-oidc", "http://localhost:5269/signout-callback-oidc" },
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
