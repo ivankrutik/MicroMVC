@@ -1,5 +1,6 @@
 using Duende.Services.IdentityNew;
 using Duende.Services.IdentityNew.DbContexts;
+using Duende.Services.IdentityNew.Initializer;
 using Duende.Services.IdentityNew.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ var builderIdentity = builder.Services.AddIdentityServer(option =>
 
 builderIdentity.AddDeveloperSigningCredential();
 
-//builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddRazorPages();
 
@@ -54,13 +55,13 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-/*using (var serviceScope = app.Services.CreateScope())
+using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
 
     var myDependency = services.GetRequiredService<IDbInitializer>();
     myDependency.Initialize();
-}*/
+}
 
 
 app.MapControllerRoute(
