@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Duende.Services.IdentityNew.Models
+namespace Mango.Services.DuendeIdentityOld.Models
 {
     public class ApplicationUser : IdentityUser
     {

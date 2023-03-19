@@ -1,4 +1,4 @@
-﻿namespace Duende.Services.IdentityNew.Initializer
+﻿namespace Mango.Services.DuendeIdentityOld.Initializer
 {
     public interface IDbInitializer
     {

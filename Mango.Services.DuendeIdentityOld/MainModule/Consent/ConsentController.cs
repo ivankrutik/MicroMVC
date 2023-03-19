@@ -5,11 +5,6 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Extensions;

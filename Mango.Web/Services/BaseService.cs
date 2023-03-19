@@ -2,6 +2,7 @@
 using Mango.Web.Services.IServices;
 using Newtonsoft.Json;
 using System;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -18,21 +19,26 @@ namespace Mango.Web.Services
             responseModel = new ResponseDto();
         }
 
-        public async Task<T> SendAsync<T>(ApiRequest request)
+        public async Task<T> SendAsync<T>(ApiRequest apiRequest)
         {
             try
             {
                 var client = HttpClientFactory.CreateClient("MangoAPI");
                 var message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
-                message.RequestUri = new Uri(request.Url);
+                message.RequestUri = new Uri(apiRequest.Url);
                 client.DefaultRequestHeaders.Clear();
-                if (request.Data != null)
+                if (apiRequest.Data != null)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
                 }
 
-                switch (request.ApiType)
+                if (!string.IsNullOrEmpty(apiRequest.AccessToken))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.AccessToken);
+                }
+
+                switch (apiRequest.ApiType)
                 {
                     case SD.ApiType.POST:
                         {

@@ -1,7 +1,9 @@
-using Duende.Services.IdentityNew;
-using Duende.Services.IdentityNew.DbContexts;
-using Duende.Services.IdentityNew.Initializer;
-using Duende.Services.IdentityNew.Models;
+using Duende.IdentityServer.Services;
+using Mango.Services.DuendeIdentityOld;
+using Mango.Services.DuendeIdentityOld.DbContexts;
+using Mango.Services.DuendeIdentityOld.Initializer;
+using Mango.Services.DuendeIdentityOld.Models;
+using Mango.Services.DuendeIdentityOld.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +33,7 @@ var builderIdentity = builder.Services.AddIdentityServer(option =>
 builderIdentity.AddDeveloperSigningCredential();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builder.Services.AddRazorPages();
 

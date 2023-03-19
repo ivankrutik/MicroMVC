@@ -1,10 +1,10 @@
-﻿using Duende.Services.IdentityNew.DbContexts;
-using Duende.Services.IdentityNew.Models;
+﻿using Mango.Services.DuendeIdentityOld.DbContexts;
+using Mango.Services.DuendeIdentityOld.Models;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace Duende.Services.IdentityNew.Initializer
+namespace Mango.Services.DuendeIdentityOld.Initializer
 {
     public class DbInitializer : IDbInitializer
     {
