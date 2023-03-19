@@ -1,19 +1,18 @@
 ﻿using IdentityServerHost.Quickstart.UI;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace Mango.Services.DuendeIdentityOld.Pages.Account
 {
+
     public class RegisterViewModel
     {
         [Required]
         public string UserName { get; set; }
+
         [Required]
         public string Email { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         [Required]
         public string Password { get; set; }
 
