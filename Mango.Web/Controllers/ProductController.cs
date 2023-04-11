@@ -99,7 +99,7 @@ namespace Mango.Web.Controllers
             if (ModelState.IsValid)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var responce = await _productService.DeleteProductAsync<ResponseDto>(model.ProductID, accessToken);
+                var responce = await _productService.DeleteProductAsync<ResponseDto>(model.ProductId, accessToken);
                 if (responce != null && responce.IsSuccess)
                 {
                     return RedirectToAction("ProductIndex");

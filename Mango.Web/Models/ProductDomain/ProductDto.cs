@@ -9,7 +9,7 @@ namespace Mango.Web.Models
             Count = 1;
         }
 
-        public long ProductID { get; set; }
+        public long ProductId { get; set; }
 
         public string Name { get; set; }
 
