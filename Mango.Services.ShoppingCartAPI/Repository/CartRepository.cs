@@ -33,6 +33,7 @@ namespace Mango.Services.ShoppingCartAPI.Repository
 
         public async Task<CartDto> CreateUpdateCartAsync(CartDto cartDto)
         {
+
             Cart cart = _mapper.Map<Cart>(cartDto);
             var prodInDb = await _db.Products.FirstOrDefaultAsync(x => x.ProductId == cart.CartDetails.FirstOrDefault().ProductId);
             if (prodInDb == null)

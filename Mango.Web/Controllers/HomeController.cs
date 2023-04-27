@@ -71,8 +71,15 @@ namespace Mango.Web.Controllers
                 cartDetails.Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(resp.Result));
             }
 
-            List<CartDetailsDto> cartDetailsDtos = new List<CartDetailsDto>();
-            cartDetailsDtos.Add(cartDetails);
+            if (cartDetails.Product != null)
+            {
+                cartDetails.Product.Image = null;
+            }
+
+            var cartDetailsDtos = new List<CartDetailsDto>
+            {
+                cartDetails
+            };
             cartDto.CartDetails = cartDetailsDtos;
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");
