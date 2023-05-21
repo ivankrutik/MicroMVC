@@ -26,10 +26,28 @@ namespace Mango.Web.Controllers
             return View(await LoadCartDtoBasedOnLoggedInUser());
         }
 
-        [HttpGet]
         public async Task<IActionResult> CheckOut()
         {
             return View(await LoadCartDtoBasedOnLoggedInUser());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckOut(CartDto cartDto)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                var responce = await _cartService.CheckOut<ResponseDto>(cartDto.CartHeader, accessToken);
+                return RedirectToAction(nameof(Confirmation));
+            }
+            catch (Exception ex)
+            {
+                return View(cartDto);
+            }
+        }
+        public async Task<IActionResult> Confirmation()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -87,7 +105,7 @@ namespace Mango.Web.Controllers
                 }
 
                 cartDto.CartHeader.OrderTotal = cartDto.CartDetails.Sum(x => (x.Count * x.Product.Price));
-                cartDto.CartHeader.OrderTotal = cartDto.CartHeader.OrderTotal - (cartDto.CartHeader.DiscountTotal??0);
+                cartDto.CartHeader.OrderTotal = cartDto.CartHeader.OrderTotal - (cartDto.CartHeader.DiscountTotal ?? 0);
 
             }
             return cartDto;

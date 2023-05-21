@@ -1,6 +1,8 @@
-﻿namespace Mango.Web.Models.CartDomain
+﻿using Mango.Services.ShoppingCartAPI.Models.Dto;
+
+namespace Mango.Services.ShoppingCartAPI.Messages
 {
-    public class CartHeaderDto
+    public class CheckOutHeaderDto
     {
         public long? CartHeaderId { get; set; }
 
@@ -27,5 +29,9 @@
         public string? ExpiryMonthYear { get; set; }
 
         public DateTime? PickupDateTime { get; set; }
+
+        public int? CartTotalItems { get; set; }
+
+        public IEnumerable<CartDetailsDto>? CartDetails { get; set; }
     }
 }

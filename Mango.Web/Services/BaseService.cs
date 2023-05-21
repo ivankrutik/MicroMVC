@@ -58,8 +58,8 @@ namespace Mango.Web.Services
                         }
                     default:
                         {
-                            message.Method = HttpMethod.Get;
                             break;
+                            message.Method = HttpMethod.Get;
                         }
                 }
 
