@@ -2,7 +2,7 @@ using AutoMapper;
 using Mango.Services.ShoppingCartAPI.DbContexts;
 using Mango.Services.ShoppingCartAPI.Mapping;
 using Mango.Services.ShoppingCartAPI.Repository;
-using MassTransit;
+using MessageBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,15 +17,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
-var ampq = builder.Configuration["EventBusSettings:HostAddress"];
-builder.Services.AddMassTransit(config =>
-{
-    config.UsingRabbitMq((ctx, cfg) =>
-    {
-        cfg.Host(ampq);
-    });
-});
-
+builder.Services.AddScoped<IMessageProducer, RabbitMQProducer>();
 
 // Add services to the container.
 builder.Services.AddControllers();
