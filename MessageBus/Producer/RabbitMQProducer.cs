@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 
-namespace MessageBus
+namespace MessageBus.Producer
 {
     public class RabbitMQProducer : IMessageProducer
     {
@@ -18,7 +18,12 @@ namespace MessageBus
             var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(_queueName);
+            //channel.QueueDeclare(_queueName);
+            channel.QueueDeclare(queue: _queueName,
+                                 durable: true,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
 
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);

@@ -1,5 +1,8 @@
 using AutoMapper;
 using Mango.Services.OrderAPI.DbContexts;
+using Mango.Services.OrderAPI.Messaging;
+using Mango.Services.OrderAPI.Messages;
+using Mango.Services.OrderAPI.Repository;
 using Mango.Servises.OrderAPI.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +16,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
+var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+optionBuilder.UseSqlServer(connectionString);
+builder.Services.AddSingleton(new OrderRepository(optionBuilder.Options));
+
+builder.Services.AddScoped<IServiseBusConsumer, ServiseBusConsumer>();
 
 // Add services to the container.
 
@@ -79,6 +87,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+
+    var myDependency = services.GetRequiredService<IServiseBusConsumer>();
+    myDependency.Start();
 }
 
 app.UseHttpsRedirection();

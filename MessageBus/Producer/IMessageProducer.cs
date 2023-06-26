@@ -1,4 +1,4 @@
-﻿namespace MessageBus
+﻿namespace MessageBus.Producer
 {
     public interface IMessageProducer
     {
