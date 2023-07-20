@@ -1,12 +1,11 @@
 ﻿using Mango.Services.OrderAPI.Messages;
 using Mango.Services.OrderAPI.Models;
 using Mango.Services.OrderAPI.Repository;
-using Microsoft.AspNetCore.Connections;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Threading.Channels;
-using System.Timers;
+using System.Text.Json.Serialization;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
@@ -17,14 +16,13 @@ namespace Mango.Services.OrderAPI.Messaging
         private EventingBasicConsumer _consumer;
         private IModel _channel;
 
-
-
         public ServiseBusConsumer(OrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
+            StartListen();
         }
 
-        public void Start()
+        private void StartListen()
         {
             var factory = new ConnectionFactory { HostName = "localhost" };
             factory.UserName = "user";
@@ -40,22 +38,23 @@ namespace Mango.Services.OrderAPI.Messaging
                                  arguments: null);
 
             _consumer = new EventingBasicConsumer(_channel);
-            _consumer.Received += (model, eventArgs) =>
-            {
-                var body = eventArgs.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-            };
+            _consumer.Received += OnCheckOutMessageReceived;
 
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: _consumer);
         }
 
         private async void OnCheckOutMessageReceived(object model, BasicDeliverEventArgs eventArgs)
         {
+
             var body = eventArgs.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
 
+            if (message == null)
+            {
+                throw new Exception("Сообщенеие из очереди не десериализовано");
+            }
             //здесь надо достать информацию из очереди сообщений
-            CheckOutHeaderDto checkOutHeaderDto = new CheckOutHeaderDto();
+            CheckOutHeaderDto checkOutHeaderDto = JsonConvert.DeserializeObject<CheckOutHeaderDto>(message);
 
             OrderHeader orderHeader = new OrderHeader()
             {

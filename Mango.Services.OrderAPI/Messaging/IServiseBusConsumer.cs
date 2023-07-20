@@ -2,6 +2,5 @@
 {
     public interface IServiseBusConsumer
     {
-        void Start();
     }
 }

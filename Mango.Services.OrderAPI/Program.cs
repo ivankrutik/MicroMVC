@@ -92,9 +92,7 @@ if (app.Environment.IsDevelopment())
 using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
-
     var myDependency = services.GetRequiredService<IServiseBusConsumer>();
-    myDependency.Start();
 }
 
 app.UseHttpsRedirection();
