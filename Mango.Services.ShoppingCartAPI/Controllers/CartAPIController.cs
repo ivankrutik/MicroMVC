@@ -3,6 +3,7 @@ using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Mango.Services.ShoppingCartAPI.Repository;
 using MessageBus.Producer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Mango.Services.ShoppingCartAPI.Controllers
 {
@@ -11,14 +12,16 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     public class CartAPIController : Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly ICouponRepository _couponRepository;
         private readonly IMessageProducer _messageProducer;
         protected ResponseDto _response;
 
-        public CartAPIController(ICartRepository cartRepository, IMessageProducer messageProducer)
+        public CartAPIController(ICartRepository cartRepository, IMessageProducer messageProducer, ICouponRepository couponRepository)
         {
             _cartRepository = cartRepository;
             _response = new ResponseDto();
             _messageProducer = messageProducer;
+            _couponRepository = couponRepository;
         }
 
         [HttpGet("GetCart/{UserId}")]
@@ -142,10 +145,23 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             try
             {
                 var cartDto = await _cartRepository.GetCartByUserIdAsync(checkOutHeader.UserId);
-                if(cartDto == null)
+                if (cartDto == null)
                 {
                     return BadRequest();
                 }
+
+                if (!string.IsNullOrEmpty(checkOutHeader.CouponCode))
+                {
+                    var coupon = await _couponRepository.GetCoupon(checkOutHeader.CouponCode);
+                    if (coupon.CouponAmount != checkOutHeader.DiscountTotal)
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages = new List<string> { "Coupon price has changed" };
+                        _response.DisplayMessage = "Coupon price has changed";
+                        return _response;
+                    }
+                }
+
                 checkOutHeader.CartDetails = cartDto.CartDetails;
 
                 ///logic to add message

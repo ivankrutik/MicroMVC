@@ -38,6 +38,13 @@ namespace Mango.Web.Controllers
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
                 var responce = await _cartService.CheckOut<ResponseDto>(cartDto.CartHeader, accessToken);
+
+                if (!responce.IsSuccess)
+                {
+                    TempData["Error"] = responce.DisplayMessage;
+                    return RedirectToAction(nameof(CheckOut));
+                }
+
                 return RedirectToAction(nameof(Confirmation));
             }
             catch (Exception ex)
