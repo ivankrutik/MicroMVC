@@ -28,8 +28,6 @@ namespace MessageBus.Producer
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
             channel.BasicPublish(exchange: "", routingKey: _queueName, body: body);
-
-
         }
     }
 }

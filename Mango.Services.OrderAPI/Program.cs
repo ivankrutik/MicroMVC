@@ -1,12 +1,12 @@
 using AutoMapper;
 using Mango.Services.OrderAPI.DbContexts;
 using Mango.Services.OrderAPI.Messaging;
-using Mango.Services.OrderAPI.Messages;
 using Mango.Services.OrderAPI.Repository;
 using Mango.Servises.OrderAPI.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MessageBus.Producer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 optionBuilder.UseSqlServer(connectionString);
 builder.Services.AddSingleton(new OrderRepository(optionBuilder.Options));
+builder.Services.AddSingleton<IMessageProducer, RabbitMQProducer>();
 
 builder.Services.AddScoped<IServiseBusConsumer, ServiseBusConsumer>();
 

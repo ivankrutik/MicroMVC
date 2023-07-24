@@ -1,11 +1,12 @@
 ﻿using Mango.Services.OrderAPI.Messages;
+using Mango.Services.OrderAPI.Messages.Pay;
 using Mango.Services.OrderAPI.Models;
 using Mango.Services.OrderAPI.Repository;
+using MessageBus.Producer;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
@@ -13,12 +14,15 @@ namespace Mango.Services.OrderAPI.Messaging
     {
         private readonly OrderRepository _orderRepository;
         private readonly string _queueName = "testQueue";
+        private readonly string _queuePayName = "payQueue";
+        private readonly IMessageProducer _messageProducer;
         private EventingBasicConsumer _consumer;
         private IModel _channel;
 
-        public ServiseBusConsumer(OrderRepository orderRepository)
+        public ServiseBusConsumer(OrderRepository orderRepository, IMessageProducer messageProducer)
         {
             _orderRepository = orderRepository;
+            _messageProducer = messageProducer;
             StartListen();
         }
 
@@ -89,6 +93,25 @@ namespace Mango.Services.OrderAPI.Messaging
             }
 
             await _orderRepository.AddOrder(orderHeader);
+
+            PaymentRequestMessage paymentRequestMessage = new PaymentRequestMessage
+            {
+                Name = orderHeader.FirstName + " " + orderHeader.LastName,
+                CardNumber = orderHeader.CardNumber,
+                CVV = orderHeader.CVV,
+                ExpiryMonthYear = orderHeader.ExpiryMonthYear,
+                OrderId = orderHeader.OrderHeaderId,
+                OrderTotal = orderHeader.OrderTotal
+            };
+
+            try
+            {
+                _messageProducer.SendMessage(paymentRequestMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
