@@ -166,6 +166,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                 ///logic to add message
                 _messageProducer.SendMessage(checkOutHeader);
+
+                await _cartRepository.ClearCartAsync(checkOutHeader.UserId);
             }
             catch (Exception ex)
             {

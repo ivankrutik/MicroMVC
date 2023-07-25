@@ -8,8 +8,9 @@ namespace MessageBus.Producer
     {
         private readonly string _queueName = "testQueue";
 
-        public void SendMessage<T>(T message)
+        public void SendMessage<T>(T message, string queueName = "")
         {
+            var queue = string.IsNullOrEmpty(queueName) ? _queueName : queueName;
             var factory = new ConnectionFactory { HostName = "localhost" };
 
             factory.UserName = "user";
@@ -19,7 +20,7 @@ namespace MessageBus.Producer
             using var channel = connection.CreateModel();
 
             //channel.QueueDeclare(_queueName);
-            channel.QueueDeclare(queue: _queueName,
+            channel.QueueDeclare(queue: queue,
                                  durable: true,
                                  exclusive: false,
                                  autoDelete: false,
@@ -27,7 +28,7 @@ namespace MessageBus.Producer
 
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
-            channel.BasicPublish(exchange: "", routingKey: _queueName, body: body);
+            channel.BasicPublish(exchange: "", routingKey: queue, body: body);
         }
     }
 }

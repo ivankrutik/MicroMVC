@@ -15,9 +15,12 @@ namespace Mango.Services.OrderAPI.Messaging
         private readonly OrderRepository _orderRepository;
         private readonly string _queueName = "testQueue";
         private readonly string _queuePayName = "payQueue";
+        private readonly string _queueUpdateOrderName = "updateOrder";
         private readonly IMessageProducer _messageProducer;
         private EventingBasicConsumer _consumer;
         private IModel _channel;
+        private IModel _channel2;
+        private EventingBasicConsumer _consumer2;
 
         public ServiseBusConsumer(OrderRepository orderRepository, IMessageProducer messageProducer)
         {
@@ -43,8 +46,32 @@ namespace Mango.Services.OrderAPI.Messaging
 
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += OnCheckOutMessageReceived;
-
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: _consumer);
+
+            _channel2 = connection.CreateModel();
+            _channel2.QueueDeclare(queue: _queueUpdateOrderName,
+                     durable: true,
+                     exclusive: false,
+                     autoDelete: false,
+                     arguments: null);
+
+            _consumer2 = new EventingBasicConsumer(_channel2);
+            _consumer2.Received += OnOrderPaymentUpdateReciver;
+            _channel2.BasicConsume(queue: _queueUpdateOrderName, autoAck: true, consumer: _consumer2);
+        }
+
+        private async void OnOrderPaymentUpdateReciver(object model, BasicDeliverEventArgs eventArgs)
+        {
+            var body = eventArgs.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+
+            if (message == null)
+            {
+                throw new Exception("Сообщенеие из очереди не десериализовано");
+            }
+            //здесь надо достать информацию из очереди сообщений
+            UpdatePaymentResultMessage resMess = JsonConvert.DeserializeObject<UpdatePaymentResultMessage>(message);
+            await _orderRepository.UpdateOrderPaymentStatus(resMess.OrderId, resMess.Status);
         }
 
         private async void OnCheckOutMessageReceived(object model, BasicDeliverEventArgs eventArgs)
@@ -106,7 +133,7 @@ namespace Mango.Services.OrderAPI.Messaging
 
             try
             {
-                _messageProducer.SendMessage(paymentRequestMessage);
+                _messageProducer.SendMessage(paymentRequestMessage, _queuePayName);
             }
             catch (Exception ex)
             {
